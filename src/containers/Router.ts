@@ -9,6 +9,7 @@ export default class Router extends HTMLElement {
     constructor() {
         super();
         this.routes = [
+            /** This is the default route in case the pathname does not match any of the other routes */
             {
                 pathname: '/',
                 view: () => new Dashboard()
@@ -17,6 +18,10 @@ export default class Router extends HTMLElement {
                 pathname: '/posts',
                 view: () => new Posts()
             },
+            // {
+            //     pathname: '/posts/:id',
+            //     view: () => new Posts()
+            // },
             {
                 pathname: '/settings',
                 view: () => new Settings()
@@ -44,8 +49,13 @@ export default class Router extends HTMLElement {
     };
 
     private routeTo = async () => {
-        const to = this.routes.find(route => route.pathname === location.pathname) || this.routes[0];
-        document.querySelector('#app')!.innerHTML = await to.view().getHtml();
+        const to = this.routes.find(route => route.pathname === location.pathname);
+
+        if (!to) {
+            this.navigateTo(this.routes[0].pathname);
+        } else {
+            document.querySelector('#app')!.innerHTML = await to.view().getHtml();
+        }
     };
 }
 
