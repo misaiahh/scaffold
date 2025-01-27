@@ -15,17 +15,17 @@ export default class Router extends HTMLElement {
             },
             {
                 pathname: '/posts',
-                view: () => new Posts() // fix this
+                view: () => new Posts()
             },
             {
                 pathname: '/settings',
-                view: () => new Settings() // fix this
+                view: () => new Settings()
             }
         ];
     }
 
     connectedCallback() {
-        window.addEventListener('popstate', this.route);
+        window.addEventListener('popstate', this.routeTo);
 
         document.addEventListener('DOMContentLoaded', () => {
             document.body.addEventListener('click', (event) => {
@@ -34,18 +34,18 @@ export default class Router extends HTMLElement {
                     this.navigateTo(event.target.href);
                 }
             });
-            this.route();
+            this.routeTo();
         });
     }
 
     private navigateTo = (url: string) => {
         history.pushState(null, '', url);
-        this.route();
+        this.routeTo();
     };
 
-    private route = async () => {
-        const view = this.routes.find(route => route.pathname === location.pathname) || this.routes[0];
-        document.querySelector('#app')!.innerHTML = await view.view().getHtml();
+    private routeTo = async () => {
+        const to = this.routes.find(route => route.pathname === location.pathname) || this.routes[0];
+        document.querySelector('#app')!.innerHTML = await to.view().getHtml();
     };
 }
 
