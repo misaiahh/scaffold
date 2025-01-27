@@ -1,7 +1,10 @@
+import AbstractView from '../views/AbstractView';
 import Dashboard from '../views/Dashboard';
+import Posts from '../views/Posts';
+import Settings from '../views/Settings';
 
 export default class Router extends HTMLElement {
-    private routes: { pathname: string, view: () => Dashboard }[];
+    private routes: { pathname: string, view: () => InstanceType<typeof AbstractView> }[];
 
     constructor() {
         super();
@@ -12,11 +15,11 @@ export default class Router extends HTMLElement {
             },
             {
                 pathname: '/posts',
-                view: () => new Dashboard() // fix this
+                view: () => new Posts() // fix this
             },
             {
                 pathname: '/settings',
-                view: () => new Dashboard() // fix this
+                view: () => new Settings() // fix this
             }
         ];
     }
